@@ -1,0 +1,97 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    transition: all .25s ease;
+    border: 0px;
+    margin: 0px;
+}
+body {
+    margin: 0px;
+    background: #DFDFDF;
+}
+.categories {
+    width: 100%;
+    height: 100px;
+    background: #00AAE2;
+    margin: 0px;
+    padding-top: 40px;
+}
+.categories ul {
+    list-style: none;
+    width: 550px;
+    margin: 0 auto;
+    padding: 0px;
+}
+.categories li {
+    display: inline-block;
+    border: 1px solid white;
+    color: white;
+    padding: 10px;
+}
+.categories li:hover {
+    color: #00AAE2;
+    background: white;
+}
+.content {
+    width: 100%;
+    background: white;
+    margin: 0 auto;
+    margin-top: 15px;
+    height: 70px;
+    border-bottom: 2px solid #00AAE2;
+}
+
+ .content a .toolname{
+    /*position: relative;*/
+ }
+.content > div {
+    display: inline-block;
+    width: calc(100%/5);
+    position: relative;
+    vertical-align: top;
+    height: 70px;
+    /*border-right: 1px solid black;*/
+}
+.content a {
+    /*border-right: 1px solid black;*/
+    height: 70px;
+}
+.content p{
+    margin: 0px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+}
+.content a, .toolname p {
+    height: 70px;
+    display: inline-block;
+}
+.content a .toolname
+ {
+    min-width: 240px;
+    height: 70px;
+    display: block;
+    font-size: 25px;
+    text-decoration: none;
+    padding-right: 10px;
+    padding-left: 10px;
+    position: relative;
+ }
+ .content a .toolname p{
+    display: block;
+    width: 90%;
+    margin: 0px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+}
+.content .edit{
+    min-width: 30px;
+    width: 40px;
+}
+.category{
+    background: #00AAE2;
+    color: #fff;
+}
