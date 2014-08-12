@@ -15,6 +15,15 @@ body {
     background: #00AAE2;
     margin: 0px;
     padding-top: 40px;
+    position: relative;
+}
+.categories h1 {
+    color: white;
+    position: absolute;
+    margin: 0px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .categories ul {
     list-style: none;
@@ -27,10 +36,21 @@ body {
     border: 1px solid white;
     color: white;
     padding: 10px;
+    /*margin-right: 3px;*/
 }
 .categories li:hover {
     color: #00AAE2;
     background: white;
+}
+.addForm {
+    height: 75px;
+    width: 100%;
+    background: lightpink;
+    animation: slideDownAppear 1s ease;
+}
+@keyframes slideDownAppear {
+    from {height: 0px; opacity:0;}
+    to {height: 75px; opacity:1;}
 }
 .content {
     width: 100%;
@@ -40,20 +60,27 @@ body {
     height: 70px;
     border-bottom: 2px solid #00AAE2;
 }
-
- .content a .toolname{
-    /*position: relative;*/
- }
-.content > div {
+.content > div, form > div {
     display: inline-block;
-    width: calc(100%/5);
+    width: calc(90%/5);
     position: relative;
     vertical-align: top;
     height: 70px;
-    /*border-right: 1px solid black;*/
+}
+form > div > input{
+    /*width: 250px;*/
+    color: black;
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #00AAE2;
+}
+.save{
+     width: 69px;
 }
 .content a {
-    /*border-right: 1px solid black;*/
     height: 70px;
 }
 .content p{
@@ -61,7 +88,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 .content a, .toolname p {
     height: 70px;
@@ -79,13 +106,12 @@ body {
     position: relative;
  }
  .content a .toolname p{
-    display: block;
-    width: 90%;
+    height: 40px;
     margin: 0px;
     position: absolute;
     top: 50%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 .content .edit{
     min-width: 30px;

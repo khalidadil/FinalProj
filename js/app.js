@@ -32,54 +32,59 @@ var ToolListing = Parse.Collection.extend({
 });
 
 var ToolView = Parse.View.extend({
-    initialize: function(template, category) {
+    initialize: function(template_url, category) {
         console.log("VIEWS YO!");
         self = this;
 
-        var listing = new ToolListing;
-        listing.query = new Parse.Query(Tool);
-        console.log(listing.query);
+        this.listing = new ToolListing;
+        this.listing.query = new Parse.Query(Tool);
+        console.log(this.listing.query);
         if (category) {
             category = category.charAt(0).toUpperCase() + category.slice(1);
-            listing.query.equalTo("category", category);
+            this.listing.query.equalTo("category", category);
         }
-
-        listing.fetch({
-            success: function(pulledData) {
-                // console.log(pulledData);
-                var pulledDataArray = [].slice.call(pulledData.models);
-                var myHTML = " ";
-
-                pulledDataArray.forEach(function(data) {
-                    // console.log(data);
-                    self.render(data, template).then(function(pulled) {
-                        myHTML += pulled;
-                        $('.results').html(myHTML);
-                    });
-                });
-            },
-            error: function(myObject, error) {
-                console.log("failed to get data");
-            }
-        });
+        this.pullDataFill(template_url);
     },
     tagName: 'div',
     className: 'content',
-    render: function(data, url) {
-        var self = this;
-        var importantData = _.extend({}, data); //passing model attributes to our view
-        var myHTML = "";
+    pullDataFill: function(url) {
+        //always use $.when!
+        $.when(
+            this.listing.fetch(),
+            this.template(url)
+        ).then(function(dataPromise, templatingFn) {
+            //pulling out our collection from the returned data promise
+            dataPromise.then(function(collection) {
 
-        return this.template(importantData, url).then(function(output) {
-            // console.log(self.$el.html(output)[0]);
-            // myHTML += self.$el.html(output)[0];
-            return self.$el.html(output)[0].innerHTML;
+                //making sure we have our ID with the model.attributes
+                var justAttributes = _.map(collection.models, function(model) {
+                    return _.extend({}, model.attributes, {
+                        id: model.id
+                    });
+                });
+
+                self.render(justAttributes, templatingFn);
+
+            })
         });
     },
-    template: function(data, url) {
-        return $.get(url).then(function(template) {
-            var findVariables = _.template(template);
-            return findVariables(data);
+    template: function(url) {
+        return $.get(url).then(function(html) {
+            return _.template(html);
+        });
+    },
+    render: function(attributes, templatingFn) {
+        var self = this;
+        $.get("/templates/header.tmpl").then(function(header) {
+            $('.categories').html(header);
+
+            var myHTML = "";
+
+            _.forEach(attributes, function(attribute_obj) {
+                myHTML += templatingFn(attribute_obj);
+            });
+
+            $('.results').html(myHTML);
         });
     }
     /*,
@@ -91,67 +96,116 @@ var ToolView = Parse.View.extend({
     }*/
 });
 
-// var ModifyData = Parse.View.extend({
-//     initialize: function(template, category, section, id) {
-//         console.log("VIEWS YO!");
-//         self = this;
+var ModifyData = Parse.View.extend({
+    initialize: function(template_url, state, listing) {
+        console.log("MODIFCATION YO!");
+        self = this;
 
-//         var listing = new ToolListing;
-//         listing.query = new Parse.Query(Tool);
-//         console.log(listing.query);
-//         if (category) {
-//             category = category.charAt(0).toUpperCase() + category.slice(1);
-//             listing.query.equalTo("category", category);
-//         }
+        // this.listing = new ToolListing;
+        // this.listing.query = new Parse.Query(Tool);
+        // console.log(this.listing.query);
+        // if (category) {
+        //     category = category.charAt(0).toUpperCase() + category.slice(1);
+        //     this.listing.query.equalTo("category", category);
+        // }
+        // this.pullDataFill(template_url);
 
-//         listing.fetch({
-//             success: function(pulledData) {
-//                 var pulledDataArray = [].slice.call(pulledData.models);
-//                 // console.log(pulledDataArray);
+        if (state === 'a') {
+            $('.categories').html('<h1>Add Data</h1><ul><li class="cancel">Cancel</li></ul>');
+            this.add();
+        } else {
+            $('.categories').html('<h1>Edit Data</h1>');
+            this.edit(listing, template_url);
+        };
+    },
+    tagName: 'div',
+    className: 'content',
+    add: function() {
+        $('.categories').after("<div class='addForm'></div>");
+    },
+    edit: function(listingID, url) {
+        console.log('filling form');
+        $('.addForm').remove();
+        this.listing = new ToolListing;
+        this.listing.query = new Parse.Query(Tool);
+        console.log(listingID);
+        this.listing.query.equalTo("objectId", listingID);
 
-//                 var myHTML = " ";
+        $.when(this.listing.fetch(), this.template(url)).then(function(dataPromise, templatingFn) {
+            dataPromise.then(function(model) {
+                console.log(templatingFn);
+                // console.log(model.models[0].attributes.category); //WORKING - STOPPED HERE!!
 
-//                 pulledDataArray.forEach(function(data) {
-//                     self.render(data, template).then(function(pulled) {
-//                         console.log(pulled);
-//                         myHTML += pulled;
-//                         // console.log(myHTML);
-//                         $('.results').html(myHTML);
-//                     });
-//                 });
-//             },
-//             error: function(myObject, error) {
-//                 console.log("failed to get data");
-//             }
-//         });/*.then(function(pulledData) {
+                var justAttributes = _.map(model.models, function(model) {
+                    return _.extend({}, model.attributes, {
+                        id: model.id
+                    });
+                });
 
-//         })*/
-//     },
-//     tagName: 'div',
-//     className: 'content',
-//     render: function(data, url) {
-//         var self = this;
-//         var importantData = _.extend({}, data.attributes); //passing model attributes to our view
-//         var myHTML = "";
+                self.render(listingID, justAttributes, templatingFn);
+            });
 
-//         return this.template(importantData, url).then(function(output) {
-//             // console.log(self.$el.html(output)[0]);
-//             // myHTML += self.$el.html(output)[0];
-//             return self.$el.html(output)[0].innerHTML;
-//         });
-//     },
-//     template: function(data, url) {
-//         return $.get(url).then(function(template) {
-//             var findVariables = _.template(template);
-//             return findVariables(data);
-//         });
-//     }
-// });
+            // $('#' + listingID).html('<form id = ' + listingID +'form> </form>');
+            //     // console.log(model.category);
+            // $('#' + listingID + 'form').html('<div class="toolname"><input type="text" name="toolname_edit" value="' + model.models[0].attributes.name + '"></div>');
+        });
+    },
+    pullDataFill: function(url) {
+        //always use $.when!
+        $.when(
+            this.listing.fetch(),
+            this.template(url)
+        ).then(function(dataPromise, templatingFn) {
+            //pulling out our collection from the returned data promise
+            dataPromise.then(function(collection) {
+
+                //making sure we have our ID with the model.attributes
+                var justAttributes = _.map(collection.models, function(model) {
+                    return _.extend({}, model.attributes, {
+                        id: model.id
+                    });
+                });
+
+                self.render(justAttributes, templatingFn);
+
+            })
+        });
+    },
+    template: function(url) {
+        return $.get(url).then(function(html) {
+            return _.template(html);
+        });
+    },
+    render: function(listingID, attributes, templatingFn) {
+        var self = this;
+        // var myHTML = "";
+        console.log(listingID);
+        // console.log(attributes[0]);
+
+        myHTML = templatingFn(attributes[0]);
+
+        $('#' + listingID).html(myHTML);
+    },
+
+    events: {
+        'click .cancel': "takeback"
+    },
+
+    takeback: function() {
+        // location.hash = '';
+        window.history.back();
+        console.log('test');
+    }
+    /*validate: function(attributes) {
+        console.log("validate");
+    },*/
+});
 
 var Router = Parse.Router.extend({
     routes: {
         "": "all",
         "all": "all",
+        "edit": "all",
         "add": "add",
         "hotnfresh": "hotnfresh",
         "edit/:listing": "edit",
@@ -177,13 +231,12 @@ var Router = Parse.Router.extend({
 
     add: function() {
         console.log("ADDING COOL STUFF!");
-        // this.view = new ModifyData("./templates/modify.tmpl");
+        this.view = new ModifyData("./templates/modify.tmpl", 'a');
     },
 
     edit: function(listing) {
         console.log("UMM THIS DOESN'T LOOK RIGHT....");
-        console.log(listing);
-        // this.view = new ModifyData("./templates/modify.tmpl", listing);
+        this.view = new ModifyData("./templates/modify.tmpl", 'e', listing);
     }
 
 });
@@ -200,23 +253,20 @@ $(function() {
 //  _/ // /_/ / /|  / /_/ / _, _/ /___   
 // /___/\____/_/ |_/\____/_/ |_/_____/   
 
-// var WebTools = Parse.Object.extend("WebTools");
-// var oneTool = new WebTools();
-// oneTool.save({
-//     name: "Toolname",
-//     website: "www.google.com",
-//     category: "Planning",
-//     tags: ["Tools"],
-//     karmic: ["Education", "Nonprofit"],
-//     platform: ["Desktop", "Web", "Mobile"]
-// }, {
-//     success: function(object) {
-//         // put what happens on success here
-//     },
-//     error: function(model, error) {
-//         // put what happens on error here
-//     }
-// });
+var Categorization = Parse.Object.extend("Categorization");
+var categories = new Categorization();
+categories.save({
+    category: "Planning",
+    subcategory: ["Wireframing", "Personas", "Storyboarding", "Scheduling", "Inspiration", "Design Patterns", "Client Communication", "Team Communication"],
+    tags: ['']
+}, {
+    success: function(object) {
+        // put what happens on success here
+    },
+    error: function(model, error) {
+        // put what happens on error here
+    }
+});
 
 // Ensure that we create a user for the client
 /*if (!Parse.User.current()) {
