@@ -99,6 +99,7 @@ var ToolView = Parse.View.extend({
 var ModifyData = Parse.View.extend({
     initialize: function(template_url, state, listing) {
         console.log("MODIFCATION YO!");
+        console.log(this.$el);
         self = this;
 
         // this.listing = new ToolListing;
@@ -109,13 +110,14 @@ var ModifyData = Parse.View.extend({
         //     this.listing.query.equalTo("category", category);
         // }
         // this.pullDataFill(template_url);
-
+        event.preventDefault();
         if (state === 'a') {
-            $('.categories').html('<h1>Add Data</h1><ul><li class="cancel">Cancel</li></ul>');
+            this.$el.find('.categories').html('<h1>Add Data</h1><ul><li class="cancel">Cancel</li></ul>');
             this.add();
         } else {
             $('.categories').html('<h1>Edit Data</h1>');
             this.edit(listing, template_url);
+            this.saveEdits();
         };
     },
     tagName: 'div',
@@ -124,7 +126,7 @@ var ModifyData = Parse.View.extend({
         $('.categories').after("<div class='addForm'></div>");
     },
     edit: function(listingID, url) {
-        console.log('filling form');
+        // console.log('filling form');
         $('.addForm').remove();
         this.listing = new ToolListing;
         this.listing.query = new Parse.Query(Tool);
@@ -134,8 +136,8 @@ var ModifyData = Parse.View.extend({
         $.when(this.listing.fetch(), this.template(url)).then(function(dataPromise, templatingFn) {
             dataPromise.then(function(model) {
                 console.log(templatingFn);
-                // console.log(model.models[0].attributes.category); //WORKING - STOPPED HERE!!
-
+                // console.log(model.models[0].attributes.category);
+                
                 var justAttributes = _.map(model.models, function(model) {
                     return _.extend({}, model.attributes, {
                         id: model.id
@@ -186,9 +188,25 @@ var ModifyData = Parse.View.extend({
 
         $('#' + listingID).html(myHTML);
     },
+    saveEdits: function(listingID) {
+        $('#'+listingID + 'form').submit(function(ev) {
+            // get all the inputs into an array.
+            ev.preventDefault();
+            console.log('submitted form!');
+            var $inputs = $('.editForm :input');
 
+            // not sure if you wanted this, but I thought I'd add it.
+            // get an associative array of just the values.
+            var values = {};
+            $inputs.each(function() {
+                values[this.name] = $(this).val();
+                console.log(values[this.name]);
+            });
+
+        });
+    },
     events: {
-        'click .cancel': "takeback"
+        'click .cancel': "takeback",
     },
 
     takeback: function() {
@@ -253,20 +271,34 @@ $(function() {
 //  _/ // /_/ / /|  / /_/ / _, _/ /___   
 // /___/\____/_/ |_/\____/_/ |_/_____/   
 
-var Categorization = Parse.Object.extend("Categorization");
-var categories = new Categorization();
-categories.save({
-    category: "Planning",
-    subcategory: ["Wireframing", "Personas", "Storyboarding", "Scheduling", "Inspiration", "Design Patterns", "Client Communication", "Team Communication"],
-    tags: ['']
-}, {
-    success: function(object) {
-        // put what happens on success here
-    },
-    error: function(model, error) {
-        // put what happens on error here
-    }
-});
+// var Categorization = Parse.Object.extend("Categorization");
+// var categories = new Categorization();
+// categories.save({
+//     category: "Planning",
+//     related: [["Wireframing", ["Tools, Elements"]],
+//              ["Personas", [""]],
+//              ["Storyboarding", [""]],
+//              ["Scheduling", [""]],
+//              ["Inspiration", [""]],
+//              ["Design Patterns", [""]],
+//              ["Client Communication", [""]],
+//              ["Team Communication", [""]]]
+//     // related: [{subcategory: "Wireframing", tags: ["Tools, Elements"]}, 
+//     //           {subcategory: "Personas", tags: [""]},
+//     //           {subcategory: "Storyboarding", tags: [""]},
+//     //           {subcategory: "Scheduling", tags: [""]},
+//     //           {subcategory: "Inspiration",  tags: [""]},
+//     //           {subcategory: "Design Patterns",  tags: [""]},
+//     //           {subcategory: "Client Communication",  tags: [""]},
+//     //           {subcategory: "Team Communication"], tags: [""]}]
+// }, {
+//     success: function(object) {
+//         // put what happens on success here
+//     },
+//     error: function(model, error) {
+//         // put what happens on error here
+//     }
+// });
 
 // Ensure that we create a user for the client
 /*if (!Parse.User.current()) {
