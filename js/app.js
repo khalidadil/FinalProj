@@ -34,11 +34,14 @@ var ToolListing = Parse.Collection.extend({
 var ToolView = Parse.View.extend({
     initialize: function(template_url, category) {
         console.log("VIEWS YO!");
+
+        console.log(this.dataCache);
+        console.log(this.viewTemplateCache);
         self = this;
 
-        this.listing = new ToolListing;
+        this.listing = new ToolListing();
         this.listing.query = new Parse.Query(Tool);
-        console.log(this.listing.query);
+        // console.log(this.listing.query);
         if (category) {
             category = category.charAt(0).toUpperCase() + category.slice(1);
             this.listing.query.equalTo("category", category);
@@ -47,9 +50,30 @@ var ToolView = Parse.View.extend({
     },
     tagName: 'div',
     className: 'content',
+    getData: function(url) {
+        self = this;
+        return this.listing.fetch();
+    },
+    getTemplate: function(url) {
+        self = this;
+        if (this.viewTemplateCache[url]) {
+            console.log("template cached");
+            var p = $.Deferred();
+            p.resolve(this.viewTemplateCache[url]);
+            return p;
+        } else {
+            console.log("template not cached");
+            return $.when(this.template(url)).then(function(templatingFn) {
+                self.viewTemplateCache[url] = templatingFn;
+                return templatingFn;
+            });
+        }
+    },
     pullDataFill: function(url) {
         //always use $.when!
-        $.when(
+        //
+
+        /*$.when(
             this.listing.fetch(),
             this.template(url)
         ).then(function(dataPromise, templatingFn) {
@@ -66,7 +90,22 @@ var ToolView = Parse.View.extend({
                 self.render(justAttributes, templatingFn);
 
             })
+        });*/
+        $.when(this.getData(url), this.getTemplate(url)).then(function(dataPromise, templatingFn) {
+            dataPromise.then(function(collection) {
+
+                var justAttributes = _.map(collection.models, function(model) {
+                    return _.extend({}, model.attributes, {
+                        id: model.id
+                    });
+                });
+
+                // console.log(justAttributes);
+
+                self.render(justAttributes, templatingFn);
+            })
         });
+
     },
     template: function(url) {
         return $.get(url).then(function(html) {
@@ -95,6 +134,9 @@ var ToolView = Parse.View.extend({
 
     }*/
 });
+
+ToolView.prototype.dataCache = {};
+ToolView.prototype.viewTemplateCache = {};
 
 var ModifyData = Parse.View.extend({
     initialize: function(template_url, state, listing) {
@@ -137,7 +179,7 @@ var ModifyData = Parse.View.extend({
             dataPromise.then(function(model) {
                 console.log(templatingFn);
                 // console.log(model.models[0].attributes.category);
-                
+
                 var justAttributes = _.map(model.models, function(model) {
                     return _.extend({}, model.attributes, {
                         id: model.id
@@ -189,9 +231,8 @@ var ModifyData = Parse.View.extend({
         $('#' + listingID).html(myHTML);
     },
     saveEdits: function(listingID) {
-        $('#'+listingID + 'form').submit(function(ev) {
+        $('#' + listingID + 'form').submit(function(ev) {
             // get all the inputs into an array.
-            ev.preventDefault();
             console.log('submitted form!');
             var $inputs = $('.editForm :input');
 
@@ -202,7 +243,7 @@ var ModifyData = Parse.View.extend({
                 values[this.name] = $(this).val();
                 console.log(values[this.name]);
             });
-
+            return false;
         });
     },
     events: {
@@ -260,6 +301,8 @@ var Router = Parse.Router.extend({
 });
 
 $(function() {
+    // window.dataCache = {};
+
     var stackRouter = new Router();
     Parse.history.start();
 })
@@ -274,23 +317,59 @@ $(function() {
 // var Categorization = Parse.Object.extend("Categorization");
 // var categories = new Categorization();
 // categories.save({
-//     category: "Planning",
-//     related: [["Wireframing", ["Tools, Elements"]],
-//              ["Personas", [""]],
-//              ["Storyboarding", [""]],
-//              ["Scheduling", [""]],
-//              ["Inspiration", [""]],
-//              ["Design Patterns", [""]],
-//              ["Client Communication", [""]],
-//              ["Team Communication", [""]]]
-//     // related: [{subcategory: "Wireframing", tags: ["Tools, Elements"]}, 
-//     //           {subcategory: "Personas", tags: [""]},
-//     //           {subcategory: "Storyboarding", tags: [""]},
-//     //           {subcategory: "Scheduling", tags: [""]},
-//     //           {subcategory: "Inspiration",  tags: [""]},
-//     //           {subcategory: "Design Patterns",  tags: [""]},
-//     //           {subcategory: "Client Communication",  tags: [""]},
-//     //           {subcategory: "Team Communication"], tags: [""]}]
+/*category: "Planning",
+    related: [["Wireframing", ["Tools, Elements"]],
+             ["Personas", [""]],
+             ["Storyboarding", [""]],
+             ["Scheduling", [""]],
+             ["Inspiration", [""]],
+             ["Design Patterns", [""]],
+             ["Client Communication", [""]],
+             ["Team Communication", [""]]]*/
+
+/*category: "Polish",
+    related: [["Color", ["Pickers, Palette Generators"]],
+             ["Fonts", ["Desktop, Web"]],
+             ["Icons", ["Font, Web"]],
+             ["Images", ["Patterns, Textures, Vectors, PSDs, Stock Photos"]]]*/
+
+/*category: "Code",
+    related: [["Editors", [""]],
+             ["Bug Reporting", [""]],
+             ["Versioning", [""]],
+             ["Preprocessors", ["CSS, HTML"]],
+             ["APIs", [""]],
+             ["MVC Frameworks", [""]],
+             ["Code Prototypers", [""]],
+             ["Virtual Environments", [""]],
+             ["Generators", [""]],
+             ["Boilerplate", [""]],
+             ["Templates", ["Bootstrap, Foundation, WordPress"]],
+             ["Documentation", [""]],
+             ["Browser Testing", [""]],
+             ["Code Validation", [""]],
+             ["Code Testing", ["Framework, Assertion Library"]],
+             ["Task Runners", [""]]]*/
+
+/*category: "Release",
+    related: [["CDNs", [""]],
+             ["Web Hosts", [""]],
+             ["Optimizers", ["HTML, CSS, Images"]],
+             ["SEO Tools", [""]]]*/
+
+// category: "Upkeep",
+// related: [["Feedback", [""]],
+//          ["Link Checkers", [""]],
+//          ["Analytics", [""]]]
+
+// related: [{subcategory: "Wireframing", tags: ["Tools, Elements"]}, 
+//           {subcategory: "Personas", tags: [""]},
+//           {subcategory: "Storyboarding", tags: [""]},
+//           {subcategory: "Scheduling", tags: [""]},
+//           {subcategory: "Inspiration",  tags: [""]},
+//           {subcategory: "Design Patterns",  tags: [""]},
+//           {subcategory: "Client Communication",  tags: [""]},
+//           {subcategory: "Team Communication"], tags: [""]}]
 // }, {
 //     success: function(object) {
 //         // put what happens on success here
