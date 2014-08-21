@@ -42,6 +42,39 @@ body {
     color: #00AAE2;
     background: white;
 }
+.sidebar {
+    width: 19%;
+    display:inline-block;
+    border-right: 2px solid darkgray;
+    /*background: lightpink;*/
+    /*margin: 20px auto 0px auto;*/
+}
+.results {
+    width: 80%;
+    display:inline-block;
+    /*background: lightgreen;*/
+    margin: 0px auto;
+    vertical-align: top;
+}
+.catBox {
+    width: 100%;
+    height: 75px;
+    background: lightgrey;
+    display: inline-block;
+    padding: 10px;
+    font-family: Lato;
+    position: relative;
+}
+.catBox h6{
+    position: absolute;
+    margin: 0px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.catBox:hover {
+    background: #f2f2f2;
+}
 .addForm {
     height: 75px;
     width: 100%;
@@ -49,8 +82,14 @@ body {
     animation: slideDownAppear 1s ease;
 }
 @keyframes slideDownAppear {
-    from {height: 0px; opacity:0;}
-    to {height: 75px; opacity:1;}
+    from {
+        height: 0px;
+        opacity: 0;
+    }
+    to {
+        height: 75px;
+        opacity: 1;
+    }
 }
 .content {
     width: 100%;
@@ -67,7 +106,7 @@ body {
     vertical-align: top;
     height: 70px;
 }
-form > div > input{
+form > div > input {
     /*width: 250px;*/
     color: black;
     width: 80%;
@@ -77,13 +116,13 @@ form > div > input{
     transform: translate(-50%, -50%);
     border: 1px solid #00AAE2;
 }
-.save{
-     width: 69px;
+.save {
+    width: 69px;
 }
 .content a {
     height: 70px;
 }
-.content p{
+.content p {
     margin: 0px;
     position: absolute;
     top: 50%;
@@ -94,8 +133,7 @@ form > div > input{
     height: 70px;
     display: inline-block;
 }
-.content a .toolname
- {
+.content a .toolname {
     min-width: 240px;
     height: 70px;
     display: block;
@@ -104,8 +142,8 @@ form > div > input{
     padding-right: 10px;
     padding-left: 10px;
     position: relative;
- }
- .content a .toolname p{
+}
+.content a .toolname p {
     height: 40px;
     margin: 0px;
     position: absolute;
@@ -113,11 +151,11 @@ form > div > input{
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.content .edit{
+.content .edit {
     min-width: 30px;
     width: 40px;
 }
-.category{
+.category {
     background: #00AAE2;
     color: #fff;
 }
