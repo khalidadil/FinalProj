@@ -192,6 +192,30 @@ this.view = new ModifyData("./templates/modify.tmpl", 'a');
 //         // put what happens on error here
 //     }
 // });
+// 
+// 
+
+
+var Categorization = Parse.Object.extend("Categorization");
+var categories = new Categorization();
+categories.save({
+category: "Planning",
+related: [["Wireframing", ["Tools, Elements"]],
+             ["Personas", [""]],
+             ["Storyboarding", [""]],
+             ["Scheduling", [""]],
+             ["Inspiration", [""]],
+             ["Design Patterns", [""]],
+             ["Client Communication", [""]],
+             ["Team Communication", [""]]]
+}, {
+    success: function(object) {
+        // put what happens on success here
+    },
+    error: function(model, error) {
+        // put what happens on error here
+    }
+});
 
 // Ensure that we create a user for the client
 /*if (!Parse.User.current()) {

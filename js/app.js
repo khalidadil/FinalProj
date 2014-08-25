@@ -114,7 +114,6 @@ AppView.prototype.viewTemplateCache = {};
 
 var Tool = Parse.Object.extend("WebTools", {
     defaults: {
-        objectId: " ",
         name: " ",
         description: " ",
         website: " ",
@@ -153,7 +152,7 @@ var ToolView = Parse.View.extend({
         subcategory = subcategory.replace("_", " ");
         console.log(subcategory);
         this.listing.query.equalTo("category", category);
-        this.listing.query.equalTo("subcategory", subcategory);
+        this.listing.query.equalTo("subcategory", subcategory.toLowerCase());
         // console.log(tag);
         if (tag) {
             console.log("FOUND TAG, SIR!");
@@ -277,51 +276,37 @@ var ModifyView = Parse.View.extend({
                 console.log("description: " + description);
                 console.log("website: " + url);
                 console.log("category: " + category);
-                console.log("subcategory: " + subcategory);
+                console.log("subcategory: " + subcategory.toLowerCase());
                 console.log("tags: " + tags);
                 console.log("karmic: " + karmic);
                 console.log("platform: " + platforms);
                 console.log("price: " + price);
                 console.log("dependencies" + dependencies);
 
-                var newTool = Parse.Object.extend("WebTools");
-                var oneTool = new newTool();
-
-                oneTool.set("name", name);
-                oneTool.set("description", description);
-                oneTool.set("website", url);
-                oneTool.set("category", category);
-                oneTool.set("subcategory", subcategory);
-                oneTool.set("tags", tags);
-                oneTool.set("karmic", karmic);
-                oneTool.set("platform", platforms);
-                oneTool.set("price", price);
-                oneTool.set("dependencies", dependencies);
-
-                oneTool.save(null, {
-                    success: function(oneTool) {
-                        alert('New object created with objectId: ' + oneTool.id);
-                    },
-                    error: function(oneTool, error) {
-                        alert('Failed to create new object, with error code: ' + error.message);
-                    }
-                });
-
-                /*oneTool.save({
+                var oneTool = new Tool();
+                console.log(oneTool);
+                oneTool.save({
                     name: name,
                     description: description,
                     website: url,
                     category: category,
-                    subcategory: subcategory,
+                    subcategory: subcategory.toLowerCase(),
                     tags: tags,
                     karmic: karmic,
                     platform: platforms,
                     price: price,
                     dependencies: dependencies
-                });*/
+                },{
+                    success: function(oneTool) {
+                        // put what happens on success here
+                    },
+                    error: function(oneTool, error) {
+                       console.log(error);
+                    }
+                });
 
-                // window.location = '#' + this.category.replace(' ', '_').toLowerCase() + '/' + this.subcategory.replace(' ', '_').toLowerCase();
-                // location.reload();
+                window.location = '#' + category.replace(' ', '_').toLowerCase() + '/' + subcategory.replace(' ', '_').toLowerCase();
+                location.reload();
             });
         } else if (category && !section) {
             this.getInfo(template2_url, category, section);
