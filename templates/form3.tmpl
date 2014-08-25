@@ -1,0 +1,50 @@
+<div class = "form_pt2">
+    <% this.tags = "";
+     for (var loc in tooltags){ 
+        this.tags = this.tags + ',' + tooltags[loc];%>
+    <% } 
+    this.tags = this.tags.slice(1)
+    console.log(this.tags);%>
+    <input type="text" id="tags2" placeholder="Tags (comma separated)" value="<%= this.tags %>">
+    <br/>
+
+    <dl class="platformsDropdown">
+        <dt>
+            <a href="#">
+                <span class="label">Platforms</span>
+                <p class="multiSel"></p>
+            </a>
+        </dt>
+
+        <dd>
+            <div class="mutliSelect">
+                <ul>
+                    <li><input type="checkbox" name="platforms[]" value="PC" />PC</li>
+                    <li><input type="checkbox" name="platforms[]" value="Mac" />Mac</li>
+                    <li><input type="checkbox" name="platforms[]" value="Web" />Web</li>
+                    <li><input type="checkbox" name="platforms[]" value="iOS" />iOS</li>
+                    <li><input type="checkbox" name="platforms[]" value="Android" />Android</li>
+                    <li><input type="checkbox" name="platforms[]" value="Chrome" />Chrome</li>
+                    <li><input type="checkbox" name="platforms[]" value="Firefox" />Firefox</li>
+                </ul>
+            </div>
+        </dd>
+    </dl>
+
+    <select class="priceDropdown">
+        <option value="Select Category">Select Price</option>
+        <option value="Free">Free</option>
+        <option value="Freemium">Freemium</option>
+        <option value="Paid">Paid</option>
+    </select>
+
+    <input type="text" id="dependencies" placeholder="Dependencies (comma separated)">
+    <br/>
+
+    <ul>
+        <li><input type="checkbox" name="karmic[]" value="Education" />Education Friendly</li>
+        <li><input type="checkbox" name="karmic[]" value="Nonprofit" />Non-Profit Friendly</li>
+    </ul>
+    <br/>
+    <button class="submit">Submit</button>
+</div>

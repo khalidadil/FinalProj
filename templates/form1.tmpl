@@ -1,0 +1,6 @@
+<select class="catDropdown">
+	<option value="Select Category">Select Category</option>
+	<% for (var loc in categories){ %>
+		<option value="<%= categories[loc].toLowerCase() %>"><%= categories[loc] %></option>
+	<% } %>
+</select>

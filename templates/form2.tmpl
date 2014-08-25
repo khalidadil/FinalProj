@@ -1,0 +1,8 @@
+<select class="subcatDropdown">
+   <option value="Select Subcategory>">Select Subcategory</option>
+    <% for (var loc in subcategories){ %>
+        <option value="<%= subcategories[loc] %>">
+            <%= subcategories[loc] %>
+        </option>
+    <% } %>
+</select>
