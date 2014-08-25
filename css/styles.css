@@ -75,6 +75,18 @@ body {
 .catBox:hover {
     background: #f2f2f2;
 }
+.add{
+    background-color: #00e069;
+}
+.add h6{
+    color: white;
+}
+.add:hover{
+    background-color: white;
+}
+.add:hover > h6{
+    color: #00e069;
+}
 .addForm {
     height: 75px;
     width: 100%;
