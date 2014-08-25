@@ -44,14 +44,14 @@ body {
 }
 .sidebar {
     width: 19%;
-    display:inline-block;
+    display: inline-block;
     border-right: 2px solid darkgray;
     /*background: lightpink;*/
     /*margin: 20px auto 0px auto;*/
 }
 .results {
     width: 80%;
-    display:inline-block;
+    display: inline-block;
     /*background: lightgreen;*/
     margin: 0px auto;
     vertical-align: top;
@@ -65,12 +65,12 @@ body {
     font-family: Lato;
     position: relative;
 }
-.catBox h6{
+.catBox h6 {
     position: absolute;
     margin: 0px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
 .catBox:hover {
     background: #f2f2f2;
@@ -122,14 +122,14 @@ form > div > input {
 .content a {
     height: 70px;
 }
-.content p {
+.content p, a .tags p {
     margin: 0px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.content a, .toolname p {
+.content a, .toolname p, a .tags p {
     height: 70px;
     display: inline-block;
 }
@@ -158,4 +158,64 @@ form > div > input {
 .category {
     background: #00AAE2;
     color: #fff;
+}
+li {
+    list-style: none;
+}
+input {
+    margin-right: 10px;
+}
+#addEditItems {
+    margin-left: 20px;
+}
+#title, #url, #description {
+    font-size: 28px;
+    width: 350px;
+    height: 50px;
+    padding: 10px;
+    margin: 10px 0px;
+    border: 2px solid lightblue;
+}
+#description {
+    width: 650px;
+    height: 200px;
+}
+dl {
+    display: inline-block;
+    margin: 20px;
+}
+.catDropdown, .subcatDropdown, .priceDropdown {
+    font-size: 18px;
+    width: 200px;
+    height: 50px;
+    margin: 10px 0px;
+}
+.subcatDropdown{
+     margin: 10px 10px;
+}
+.form_pt2 {
+    width: 100%;
+    height: 500px;
+    position: relative;
+}
+#tags2, #dependencies {
+    position: absolute;
+    left: 630px;
+    top: -46px;
+    font-size: 18px;
+    width: 350px;
+    height: 50px;
+    padding: 10px;
+    margin: 10px 0px;
+    border: 2px solid lightblue;
+}
+#dependencies {
+    top: 55px;
+    left: 590px;
+}
+.platformsDropdown, .priceDropdown {
+    vertical-align: top;
+}
+button {
+    background-color: skyblue;
 }

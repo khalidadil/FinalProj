@@ -83,6 +83,45 @@ render2: function(attributes, templatingFn, htmlAttach) {
     <div class="edit"><a href = "#edit/<%= id %>"><p>Edit</p></a></div>
 </div>
 
+
+all: function() {
+    console.log("ALL OF THEM YO!");
+    this.view = new AppView(header_template_url, sidebar_template_url);
+    // this.view = new ToolView("./templates/tool.tmpl");
+}
+
+categoryview: function(category) {
+    console.log("CATEGORIES YO!");
+    console.log(category);
+    this.view = new ToolView("./templates/tool.tmpl", category);
+}
+
+//old Routing
+this.view = new ToolView("./templates/tool.tmpl", category, section);
+this.view = new ModifyData("./templates/modify.tmpl", 'a'); 
+
+//price Dropdown
+<dl class="priceDropdown">
+        <dt>
+            <a href="#">
+                <span class="label">Price</span>
+                <p class="multiSel"></p>
+            </a>
+        </dt>
+
+        <dd>
+            <div class="mutliSelect">
+                <ul>
+                    <li><input type="checkbox" name="price[]" value="Free" />Free</li>
+                    <li><input type="checkbox" name="price[]" value="Freemium" />Freemium</li>
+                    <li><input type="checkbox" name="price[]" value="Paid" />Paid</li>
+                </ul>
+            </div>
+        </dd>
+    </dl>
+
+
+
 //     ___________   ______  ____  ______
 //    /  _/ ____/ | / / __ \/ __ \/ ____/
 //    / // / __/  |/ / / / / /_/ / __/   

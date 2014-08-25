@@ -1,3 +1,4 @@
+	<a href="#add"><div class="catBox"><h6>Add New</h6></div></a>
 <% for (var subcat in subcats){ %>
 	<a href="#<%= cat %>/<%= subcats[subcat].replace(' ', '_').toLowerCase()%>"><div class="catBox"><h6><%= subcats[subcat] %></h6></div></a>
 <% } %>
