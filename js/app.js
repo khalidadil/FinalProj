@@ -45,9 +45,11 @@ var AppView = Parse.View.extend({
                     return model.get('order');
                 });
 
-                _.each(models, function(model) {
-                    this.justCategories.push(model.attributes.category);
-                });
+                if (models) {
+                    _.each(models, function(model) {
+                        this.justCategories.push(model.attributes.category);
+                    });
+                }
 
                 if (!category) {
                     category = this.justCategories[0].toLowerCase();
