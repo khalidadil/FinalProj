@@ -1,35 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Web Tools</title>
-    <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/typeplate/1.1.2/typeplate.min.css">
-    <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/normalize/3.0.1/normalize.min.css">
-    <!-- <link rel="stylesheet" href="css/reset.css"> -->
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-</head> 
+    <title>WebCakes!</title>
+    <link type="text/css" rel="stylesheet" href="./assets/css/normalize.css"></link>
+    <link type="text/css" rel="stylesheet" href="./assets/css/typeplate.css"></link>
+    <link type="text/css" rel="stylesheet" href="./assets/css/styles.css"></link>
+</head>
 
 <body>
-    <div class="container">
-        <div class="categories"><ul></ul></div>
-        <div class="sidebar"></div>
-        <div class="results">
-            <!--<div class="content" id="<%= id %>">
-                <a href="#>"><div class="toolname"><p>Name</p></div></a>
-                <div class="category"><p>Category</p></div>
-                <div class="tags"><p>Tags</p></div>
-                <div class="karmic"><p>Karmic</p></div>
-                <div class="platform"><p>Platform</p></div>
-                <div class="edit"><a href = "#"><p>Edit</p></a></div>
-            </div>-->
+    <header>
+        <div class="title-block">
+            <h1>WebCakes</h1>
+            <h3>Fresh Web Dev Tools. Baked and delivered weekly.</h3>
+        </div>
+        <nav>
+            <div class="pre-nav">
+                <p>Sign-up for our weekly
+                    <img src="./assets/img/hot_n_fresh.png">e-mail list. The latest updates straight out of the oven.
+                    <button class="subscribe">Subscribe</button>
+                    <div class="email">
+                        <form>
+                            <input type="email" name="email">
+                            <input type="submit">
+                        </form>
+                    </div>    
+                </p>
+            </div>
+            <div class="nav-wrapper">
+            </div>
+        </nav>
+    </header>
+    <div class="wrap">
+        <div id="container2">
+            <div id="container1">
+                <div class="sub-nav" id="col1"></div>
+                <div id="col2"></div>
+            </div>
         </div>
     </div>
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-        <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.19.min.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
+    <footer>
+        <div class="footer-left">
+            <p>All rights reserved. <a href="index.html">WebCakes</a> 2014</p>
+        </div>
+        <div class="footer-right">
+            <ul>
+                <!--<li><a href="">Send New Ingredients</a>
+                </li>-->
+                <li><a href="">Contact Us</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+    <script type="text/javascript" src="./js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.19.min.js"></script>
+    <script type="text/javascript" src="./js/app.js"></script>
+    <!--[if lt IE 10]>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(function() {
+	  $('.back').hide();
+	  $('.icon').mouseenter(function() {
+	    $(this).find('.back').fadeToggle();
+	  }).mouseleave(function() {
+	    $(this).find('.back').fadeToggle();
+	  });
+	})();
+	</script>
+	<![endif]-->
 </body>
 
 </html>

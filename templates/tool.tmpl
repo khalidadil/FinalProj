@@ -1,8 +1,60 @@
-<div class="content" id="<%= id %>">
-    <a href="http://<%= website %>"><div class="toolname"><p><%= name %></p></div></a>
-    <div class="category"><p><%= category %> > <%= subcategory %></p></div>
-    <div class="tags"><a id='tags' href="#<%= category.replace(' ', '_').toLowerCase() %>/<%= subcategory.replace(' ', '_').toLowerCase() %>/<%= _.each(tags, function(tag) { return tag.replace(' ', '_').toLowerCase(); }) %>"><p><%= tags %></p></a></div>
-    <div class="karmic"><p><%= karmic %></p></div>
-    <div class="platform"><p><%= platform %></p></div>
-    <!--<div class="edit"><a href = "#edit/<%= id %>"><p>Edit</p></a></div>-->
+<div class="content">
+    <h2><%= name %></h2>
+    <ul>
+        <% if(platform.indexOf("Mac") !== -1) { %>
+        	<li><img src="./assets/img/apple.png"></li>
+        <% } %>
+        <% if(platform.indexOf("PC") !== -1) { %>
+        	<li><img src="./assets/img/microsoft.png"></li>
+        <% } %>
+        <% if(platform.indexOf("Web") !== -1) { %>
+        	<li><img src="./assets/img/browser.png"></li>
+        <% } %>
+        <% if(platform.indexOf("iOS") !== -1) { %>
+        	<li><img src="./assets/img/appledevices.png"></li>
+        <% } %>
+        <% if(platform.indexOf("Android") !== -1) { %>
+        	<li><img src="./assets/img/android.png"></li>
+        <% } %>
+        <% if(platform.indexOf("Chrome") !== -1) { %>
+        	<li><img src="./assets/img/chrome.png"></li>
+        <% } %>
+        <% if(platform.indexOf("Safari") !== -1) { %>
+        	<li><img src="./assets/img/safari.png"></li>
+        <% } %>
+		<% if(platform.indexOf("Firefox") !== -1) { %>
+        	<li><img src="./assets/img/firefox.png"></li>
+        <% } %>
+		
+		<% if(price === "Free") { %>
+        	<li><img src="./assets/img/free.png"></li>
+        <% } %>
+        <% if(price === "Freemium") { %>
+        	<li><img src="./assets/img/freemium.png"></li>
+        <% } %>
+        <% if(price === "Paid") { %>
+        	<li><img src="./assets/img/paid.png"></li>
+        <% } %>
+
+		<% if(karmic.indexOf("Nonprofit") !== -1) { %>
+        	<li><img src="./assets/img/nonprofit.png"></li>
+        <% } %>
+        <% if(karmic.indexOf("Education") !== -1) { %>
+        	<li><img src="./assets/img/education.png"></li> 
+        <% } %>	                           
+    </ul>
+    <hr>
+    <div class="specs">
+        <a href="http://<%= website %>"><%= name %> Site</a>
+    </div>
+    <p><%= description %></p>
+    <div class="tags">
+        <ul>
+            <% if (tags){
+            	for (var loc in tags){ %>
+            	<a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/<%= tags[loc].replace(" ", "_").toLowerCase() %>"><li><%= tags[loc] %></li></a>
+            <% 	}
+               } %>
+        </ul>
+    </div>
 </div>

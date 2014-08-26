@@ -7,7 +7,9 @@ var Category = Parse.Object.extend("Categorization", {
     }
 });
 
-var CategoryListing = Parse.Collection.extend({ model: Category });
+var CategoryListing = Parse.Collection.extend({
+    model: Category
+});
 
 var AppView = Parse.View.extend({
     header_template_url: "./templates/header.tmpl",
@@ -19,15 +21,24 @@ var AppView = Parse.View.extend({
         this.pullDataFill(category, section, tag);
     },
     pullDataFill: function(category, section, tag) {
+        $('.back ' + category).toggleClass('active');
         var self = this;
-        this.listing.fetch().then(function(){
+        this.listing.fetch().then(function() {
             var mappedData = [];
             var models = _.sortBy(self.listing.models, function(model) {
                 return model.get('order');
             });
 
-            var justCategories = _.map(models, function(m){
+            var justCategories = _.map(models, function(m) {
                 return m.attributes.category
+            })
+
+            var frontImages = _.map(models, function(m) {
+                return m.attributes.img_front
+            })
+
+            var backImages = _.map(models, function(m) {
+                return m.attributes.img_back
             })
 
             if (!category) {
@@ -45,8 +56,8 @@ var AppView = Parse.View.extend({
             }
 
             justToolTags = _.zip.apply(_, models[categoryLoc].attributes.related)[1];
-            
-            self.render(justCategories, justSubCategories, justToolTags, category, section, tag);
+
+            self.render(justCategories, frontImages, backImages, justSubCategories, justToolTags, category, section, tag);
         });
     },
     getTemplate: function(url) {
@@ -67,22 +78,24 @@ var AppView = Parse.View.extend({
             return _.template(html);
         });
     },
-    render: function(justCategories, justSubCategories, justToolTags, category, section, tag) {
+    render: function(justCategories, justfrontImages, justbackImages, justSubCategories, justToolTags, category, section, tag) {
         // debugger;
         $.when(
             this.getTemplate(this.header_template_url),
             this.getTemplate(this.sidebar_template_url)
-        ).then(function(headerTemplatingFn, sidebarTemplatingFn){
+        ).then(function(headerTemplatingFn, sidebarTemplatingFn) {
             var self = this,
                 catData = {
-                    categories: justCategories
+                    categories: justCategories,
+                    frontImages: justfrontImages,
+                    backImages: justbackImages
                 },
-                catDest = '.categories ul',
+                catDest = '.nav-wrapper',
                 sidebarData = {
                     cat: category,
                     subcats: justSubCategories
                 },
-                sidebarDest = '.sidebar';
+                sidebarDest = '#col1';
 
             // debugger;
             $(catDest).html(headerTemplatingFn(catData));
@@ -130,8 +143,8 @@ var ToolView = Parse.View.extend({
         category = category.charAt(0).toUpperCase() + category.slice(1);
         subcategory = subcategory.replace("_", " ");
 
-        this.listing.query.equalTo("category", category);
-        this.listing.query.equalTo("subcategory", subcategory.toLowerCase());
+        this.listing.query.equalTo("category", category.replace('_', ' '));
+        this.listing.query.equalTo("subcategory", subcategory.replace('_', ' ').toLowerCase());
 
         if (tag) {
             tag = tag.charAt(0).toUpperCase() + tag.slice(1);
@@ -176,18 +189,20 @@ var ToolView = Parse.View.extend({
     render: function(attributes) {
         $.when(
             this.getTemplate(this.template_url)
-        ).then(function(templatingFn){
+        ).then(function(templatingFn) {
             var myHTML = "";
 
             _.forEach(attributes, function(attribute_obj) {
                 myHTML += templatingFn(attribute_obj);
             });
 
+            console.log(myHTML);
+
             if (myHTML === "") {
-                $('.results').html("<h3>No tools found in this category</h3>");
+                $('#col2').html("<h3>No tools found in this category</h3>");
                 return;
             }
-            $('.results').html(myHTML);
+            $('#col2').html(myHTML);
         })
     }
 });
@@ -268,12 +283,12 @@ var ModifyView = Parse.View.extend({
                     platform: platforms,
                     price: price,
                     dependencies: dependencies
-                },{
+                }, {
                     success: function(oneTool) {
                         // put what happens on success here
                     },
                     error: function(oneTool, error) {
-                       console.log(error);
+                        console.log(error);
                     }
                 });
 
@@ -434,6 +449,12 @@ var Router = Parse.Router.extend({
 });
 
 $(function() {
+    $('.back ').on('click', function() {
+            $(this).toggleClass('active');
+    });
+    $('.subscribe').on('click', function() {
+        $('.email').toggleClass('visible');
+    });
     var stackRouter = new Router();
     Parse.history.start();
 })
