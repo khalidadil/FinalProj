@@ -4,90 +4,58 @@ var Category = Parse.Object.extend("Categorization", {
     defaults: {
         category: " ",
         related: " "
-    },
-    initialize: function() {
-        console.log("Category MODEL YO!");
     }
 });
 
-var CategoryListing = Parse.Collection.extend({
-    model: Category, // you will create a view and a model to show in the HTML
-    initialize: function() {
-        console.log("Category COLLECTIONS YO!");
-    }
-});
+var CategoryListing = Parse.Collection.extend({ model: Category });
 
 var AppView = Parse.View.extend({
-    initialize: function(header_template_url, sidebar_template_url, category, section, tag) {
-        console.log("Category VIEW YO!");
+    header_template_url: "./templates/header.tmpl",
+    sidebar_template_url: "./templates/sidebar.tmpl",
+    initialize: function(category, section, tag) {
         this.category = category;
         this.section = section;
-        var self = this;
-
-        // console.log(this.category);
         this.listing = new CategoryListing();
-        // this.listing.query = new Parse.Query(CategoryListing);
-        // this.listing.query.exists("category");
-
-        this.pullDataFill(header_template_url, sidebar_template_url, category, section, tag);
+        this.pullDataFill(category, section, tag);
     },
-    pullDataFill: function(header_template, sidebar_template, category, section, tag) {
+    pullDataFill: function(category, section, tag) {
         var self = this;
-        $.when(this.listing.fetch(), this.getTemplate(header_template), this.getTemplate(sidebar_template)).then(function(dataPromise, headerTemplatingFn, sidebarTemplatingFn) {
-            dataPromise.then(function(collection) {
-                // console.log("Category collection (collection)?");
-                console.log(collection);
+        this.listing.fetch().then(function(){
+            var mappedData = [];
+            var models = _.sortBy(self.listing.models, function(model) {
+                return model.get('order');
+            });
 
-                this.justCategories = [];
-                this.mappedData = [];
-
-                var models = _.sortBy(collection.models, function(model) {
-                    return model.get('order');
-                });
-
-                if (models) {
-                    _.each(models, function(model) {
-                        this.justCategories.push(model.attributes.category);
-                    });
-                }
-
-                if (!category) {
-                    category = this.justCategories[0].toLowerCase();
-                }
-
-                capitalCategory = category.charAt(0).toUpperCase() + category.slice(1);
-                var categoryLoc = this.justCategories.indexOf(capitalCategory);
-
-                this.justSubCategories = _.zip.apply(_, models[categoryLoc].attributes.related)[0];
-                if (!section) {
-                    section = this.justSubCategories[0];
-                    window.location = '#' + category + '/' + section.replace(' ', '_').toLowerCase();
-                    return; //this is here so that rendering is canceled when the location is switched
-                }
-
-                this.justToolTags = _.zip.apply(_, models[categoryLoc].attributes.related)[1];
-
-                self.render({
-                    categories: this.justCategories
-                }, headerTemplatingFn, '.categories ul');
-
-                self.render({
-                    cat: category,
-                    subcats: this.justSubCategories
-                }, sidebarTemplatingFn, '.sidebar');
-                var myTool = new ToolView("./templates/tool.tmpl", category, section, tag, this.justToolTags);
+            var justCategories = _.map(models, function(m){
+                return m.attributes.category
             })
+
+            if (!category) {
+                category = justCategories[0].toLowerCase();
+            }
+
+            var capitalCategory = category[0].toUpperCase() + category.slice(1);
+            var categoryLoc = justCategories.indexOf(capitalCategory);
+
+            justSubCategories = _.zip.apply(_, models[categoryLoc].attributes.related)[0];
+            if (!section) {
+                section = justSubCategories[0];
+                window.location = '#' + category + '/' + section.replace(' ', '_').toLowerCase();
+                return; //this is here so that rendering is canceled when the location is switched
+            }
+
+            justToolTags = _.zip.apply(_, models[categoryLoc].attributes.related)[1];
+            
+            self.render(justCategories, justSubCategories, justToolTags, category, section, tag);
         });
     },
     getTemplate: function(url) {
         var self = this;
         if (this.viewTemplateCache[url]) {
-            console.log("template cached");
             var p = $.Deferred();
             p.resolve(this.viewTemplateCache[url]);
             return p;
         } else {
-            console.log("template not cached");
             return $.when(this.template(url)).then(function(templatingFn) {
                 self.viewTemplateCache[url] = templatingFn;
                 return templatingFn;
@@ -99,13 +67,28 @@ var AppView = Parse.View.extend({
             return _.template(html);
         });
     },
-    render: function(attributes, templatingFn, htmlAttach) {
-        var self = this;
-        var myHTML = "";
+    render: function(justCategories, justSubCategories, justToolTags, category, section, tag) {
+        // debugger;
+        $.when(
+            this.getTemplate(this.header_template_url),
+            this.getTemplate(this.sidebar_template_url)
+        ).then(function(headerTemplatingFn, sidebarTemplatingFn){
+            var self = this,
+                catData = {
+                    categories: justCategories
+                },
+                catDest = '.categories ul',
+                sidebarData = {
+                    cat: category,
+                    subcats: justSubCategories
+                },
+                sidebarDest = '.sidebar';
 
-        myHTML += templatingFn(attributes);
-
-        $(htmlAttach).html(myHTML);
+            // debugger;
+            $(catDest).html(headerTemplatingFn(catData));
+            $(sidebarDest).html(sidebarTemplatingFn(sidebarData));
+            var myTool = new ToolView(category, section, tag, justToolTags);
+        })
     }
 });
 
@@ -138,64 +121,50 @@ var ToolListing = Parse.Collection.extend({
 });
 
 var ToolView = Parse.View.extend({
-    initialize: function(template_url, category, subcategory, tag, toolTags) {
-        console.log("VIEWS YO!");
-
+    template_url: "./templates/tool.tmpl",
+    initialize: function(category, subcategory, tag, toolTags) {
         var self = this;
-
         this.listing = new ToolListing();
         this.listing.query = new Parse.Query(Tool);
-        // console.log(this.listing.query);
 
         category = category.charAt(0).toUpperCase() + category.slice(1);
-        // subcategory = subcategory.charAt(0).toUpperCase() + subcategory.slice(1);
         subcategory = subcategory.replace("_", " ");
-        console.log(subcategory);
+
         this.listing.query.equalTo("category", category);
         this.listing.query.equalTo("subcategory", subcategory.toLowerCase());
-        // console.log(tag);
+
         if (tag) {
-            console.log("FOUND TAG, SIR!");
             tag = tag.charAt(0).toUpperCase() + tag.slice(1);
             this.listing.query.equalTo("tags", tag);
         }
 
-        this.pullDataFill(template_url);
+        this.pullDataFill();
     },
     tagName: 'div',
     className: 'content',
-    getData: function(url) {
-        var self = this;
-        return this.listing.fetch();
-    },
     getTemplate: function(url) {
         var self = this;
         if (this.viewTemplateCache[url]) {
-            console.log("template cached");
             var p = $.Deferred();
             p.resolve(this.viewTemplateCache[url]);
             return p;
         } else {
-            console.log("template not cached");
             return $.when(this.template(url)).then(function(templatingFn) {
                 self.viewTemplateCache[url] = templatingFn;
                 return templatingFn;
             });
         }
     },
-    pullDataFill: function(url) {
+    pullDataFill: function() {
         var self = this;
-        $.when(this.getData(url), this.getTemplate(url)).then(function(dataPromise, templatingFn) {
-            dataPromise.then(function(collection) {
-
-                var justAttributes = _.map(collection.models, function(model) {
-                    return _.extend({}, model.attributes, {
-                        id: model.id
-                    });
+        this.listing.fetch().then(function() {
+            var justAttributes = _.map(self.listing.models, function(model) {
+                return _.extend({}, model.attributes, {
+                    id: model.id
                 });
+            });
 
-                self.render(justAttributes, templatingFn);
-            })
+            self.render(justAttributes);
         });
 
     },
@@ -204,19 +173,22 @@ var ToolView = Parse.View.extend({
             return _.template(html);
         });
     },
-    render: function(attributes, templatingFn) {
-        var self = this;
-        var myHTML = "";
+    render: function(attributes) {
+        $.when(
+            this.getTemplate(this.template_url)
+        ).then(function(templatingFn){
+            var myHTML = "";
 
-        _.forEach(attributes, function(attribute_obj) {
-            myHTML += templatingFn(attribute_obj);
-        });
+            _.forEach(attributes, function(attribute_obj) {
+                myHTML += templatingFn(attribute_obj);
+            });
 
-        if (myHTML === "") {
-            $('.results').html("<h3>No tools found in this category</h3>");
-            return;
-        }
-        $('.results').html(myHTML);
+            if (myHTML === "") {
+                $('.results').html("<h3>No tools found in this category</h3>");
+                return;
+            }
+            $('.results').html(myHTML);
+        })
     }
 });
 
@@ -444,24 +416,18 @@ var Router = Parse.Router.extend({
         ":category/:section/:tag": "sectionview"
         // ":category/:section": "sectionview"
     },
-    header_template_url: "./templates/header.tmpl",
-    sidebar_template_url: "./templates/sidebar.tmpl",
     form_template_url: "./templates/form1.tmpl",
     form_template2_url: "./templates/form2.tmpl",
     form_template3_url: "./templates/form3.tmpl",
     sectionview: function(category, section, tag) {
-        console.log(section);
-        console.log(tag);
-        this.view = new AppView(this.header_template_url, this.sidebar_template_url, category, section, tag);
+        this.view = new AppView(category, section, tag);
     },
 
     add: function(category, section) {
-        console.log("ADDING COOL STUFF!");
         this.view = new ModifyView(this.form_template_url, this.form_template2_url, this.form_template3_url, category, section);
     },
 
     edit: function(listing) {
-        console.log("UMM THIS DOESN'T LOOK RIGHT....");
         // this.view = new ModifyData("./templates/modify.tmpl", 'e', listing); NEEDS TO BE REPLACED
     }
 

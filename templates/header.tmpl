@@ -1,3 +1,5 @@
-<% for (var loc in categories){ %>
-	<a href="#<%= categories[loc].toLowerCase() %>"><li><%= categories[loc] %></li></a>
+<% for (var loc = 0; loc < categories.length; loc++){ %>
+	<a href="#<%= categories[loc].toLowerCase() %>">
+		<li><%= categories[loc] %></li>
+	</a>
 <% } %>
