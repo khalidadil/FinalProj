@@ -14,14 +14,13 @@ var CategoryListing = Parse.Collection.extend({
 var AppView = Parse.View.extend({
     header_template_url: "./templates/header.tmpl",
     sidebar_template_url: "./templates/sidebar.tmpl",
-    initialize: function(category, section, tag) {
+    initialize: function(category, section, filterCat, filter) {
         this.category = category;
         this.section = section;
         this.listing = new CategoryListing();
-        this.pullDataFill(category, section, tag);
+        this.pullDataFill(category, section, filterCat, filter);
     },
-    pullDataFill: function(category, section, tag) {
-        $('.back ' + category).toggleClass('active');
+    pullDataFill: function(category, section, filterCat, filter) {
         var self = this;
         this.listing.fetch().then(function() {
             var mappedData = [];
@@ -57,7 +56,7 @@ var AppView = Parse.View.extend({
 
             justToolTags = _.zip.apply(_, models[categoryLoc].attributes.related)[1];
 
-            self.render(justCategories, frontImages, backImages, justSubCategories, justToolTags, category, section, tag);
+            self.render(justCategories, frontImages, backImages, justSubCategories, justToolTags, category, section, filterCat, filter);
         });
     },
     getTemplate: function(url) {
@@ -78,7 +77,7 @@ var AppView = Parse.View.extend({
             return _.template(html);
         });
     },
-    render: function(justCategories, justfrontImages, justbackImages, justSubCategories, justToolTags, category, section, tag) {
+    render: function(justCategories, justfrontImages, justbackImages, justSubCategories, justToolTags, category, section, filterCat, filter) {
         // debugger;
         $.when(
             this.getTemplate(this.header_template_url),
@@ -100,7 +99,8 @@ var AppView = Parse.View.extend({
             // debugger;
             $(catDest).html(headerTemplatingFn(catData));
             $(sidebarDest).html(sidebarTemplatingFn(sidebarData));
-            var myTool = new ToolView(category, section, tag, justToolTags);
+            $('.back ' + category).toggleClass('active');
+            var myTool = new ToolView(category, section, justToolTags, filterCat, filter);
         })
     }
 });
@@ -135,7 +135,7 @@ var ToolListing = Parse.Collection.extend({
 
 var ToolView = Parse.View.extend({
     template_url: "./templates/tool.tmpl",
-    initialize: function(category, subcategory, tag, toolTags) {
+    initialize: function(category, subcategory, justToolTags, filterCat, filter) {
         var self = this;
         this.listing = new ToolListing();
         this.listing.query = new Parse.Query(Tool);
@@ -146,9 +146,27 @@ var ToolView = Parse.View.extend({
         this.listing.query.equalTo("category", category.replace('_', ' '));
         this.listing.query.equalTo("subcategory", subcategory.replace('_', ' ').toLowerCase());
 
-        if (tag) {
-            tag = tag.charAt(0).toUpperCase() + tag.slice(1);
-            this.listing.query.equalTo("tags", tag);
+        console.log("filter category: " + filterCat);
+        console.log("filter: " + filter);
+
+        if (filterCat === "tag") {
+            filter = filter.charAt(0).toUpperCase() + filter.slice(1);
+            this.listing.query.equalTo("tags", filter);
+        }
+
+        if (filterCat === "platform") {
+            console.log("platform: " + filter);
+            this.listing.query.equalTo("platform", filter);
+        }
+
+        if (filterCat === "karmic") {
+            console.log("karmic: " + filter);
+            this.listing.query.equalTo("karmic", filter);
+        }
+
+        if (filterCat === "price") {
+            console.log("price: " + filter);
+            this.listing.query.equalTo("price", filter);
         }
 
         this.pullDataFill();
@@ -196,7 +214,7 @@ var ToolView = Parse.View.extend({
                 myHTML += templatingFn(attribute_obj);
             });
 
-            console.log(myHTML);
+            // console.log(myHTML);
 
             if (myHTML === "") {
                 $('#col2').html("<h3>No tools found in this category</h3>");
@@ -428,14 +446,14 @@ var Router = Parse.Router.extend({
         "edit/:listing": "edit",
         ":category": "sectionview",
         ":category/:section": "sectionview",
-        ":category/:section/:tag": "sectionview"
+        ":category/:section/filter/:filterCat/:filter": "sectionview",
         // ":category/:section": "sectionview"
     },
     form_template_url: "./templates/form1.tmpl",
     form_template2_url: "./templates/form2.tmpl",
     form_template3_url: "./templates/form3.tmpl",
-    sectionview: function(category, section, tag) {
-        this.view = new AppView(category, section, tag);
+    sectionview: function(category, section, filterCat, filter) {
+        this.view = new AppView(category, section, filterCat, filter);
     },
 
     add: function(category, section) {

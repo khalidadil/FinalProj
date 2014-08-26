@@ -2,45 +2,45 @@
     <h2><%= name %></h2>
     <ul>
         <% if(platform.indexOf("Mac") !== -1) { %>
-        	<li><img src="./assets/img/apple.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/Mac"><img src="./assets/img/apple.png"></a></li>
         <% } %>
         <% if(platform.indexOf("PC") !== -1) { %>
-        	<li><img src="./assets/img/microsoft.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/PC"><img src="./assets/img/microsoft.png"></a></li>
         <% } %>
         <% if(platform.indexOf("Web") !== -1) { %>
-        	<li><img src="./assets/img/browser.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/Web"><img src="./assets/img/browser.png"></a></li>
         <% } %>
         <% if(platform.indexOf("iOS") !== -1) { %>
-        	<li><img src="./assets/img/appledevices.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/iOS"><img src="./assets/img/appledevices.png"></a></li>
         <% } %>
         <% if(platform.indexOf("Android") !== -1) { %>
-        	<li><img src="./assets/img/android.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/Android"><img src="./assets/img/android.png"></a></li>
         <% } %>
         <% if(platform.indexOf("Chrome") !== -1) { %>
-        	<li><img src="./assets/img/chrome.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/Chrome"><img src="./assets/img/chrome.png"></a></li>
         <% } %>
         <% if(platform.indexOf("Safari") !== -1) { %>
-        	<li><img src="./assets/img/safari.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/Safari"><img src="./assets/img/safari.png"></a></li>
         <% } %>
 		<% if(platform.indexOf("Firefox") !== -1) { %>
-        	<li><img src="./assets/img/firefox.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/Firefox"><img src="./assets/img/firefox.png"></a></li>
         <% } %>
 		
 		<% if(price === "Free") { %>
-        	<li><img src="./assets/img/free.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/price/Free"><img src="./assets/img/free.png"></a></li>
         <% } %>
         <% if(price === "Freemium") { %>
-        	<li><img src="./assets/img/freemium.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/price/Freemium"><img src="./assets/img/freemium.png"></a></li>
         <% } %>
         <% if(price === "Paid") { %>
-        	<li><img src="./assets/img/paid.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/price/Paid"><img src="./assets/img/paid.png"></a></li>
         <% } %>
 
 		<% if(karmic.indexOf("Nonprofit") !== -1) { %>
-        	<li><img src="./assets/img/nonprofit.png"></li>
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/karmic/Nonprofit"><img src="./assets/img/nonprofit.png"></a></li>
         <% } %>
         <% if(karmic.indexOf("Education") !== -1) { %>
-        	<li><img src="./assets/img/education.png"></li> 
+        	<li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/karmic/Education"><img src="./assets/img/education.png"></a></li>
         <% } %>	                           
     </ul>
     <hr>
@@ -52,7 +52,7 @@
         <ul>
             <% if (tags){
             	for (var loc in tags){ %>
-            	<a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/<%= tags[loc].replace(" ", "_").toLowerCase() %>"><li><%= tags[loc] %></li></a>
+            	<a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/tag/<%= tags[loc].replace(" ", "_").toLowerCase() %>"><li><%= tags[loc] %></li></a>
             <% 	}
                } %>
         </ul>
