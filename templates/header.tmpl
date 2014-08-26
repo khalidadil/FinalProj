@@ -1,10 +1,10 @@
 <ul class="main-nav">
     <% for (var loc = 0; loc < categories.length; loc++){ %>
-    	<li class="icon">
+    	<li class="icon <%if(loc === indexOfCategory) {%> active <% } %>">
 			<a href="#<%= categories[loc].toLowerCase() %>" class="front">
 	            <img src="<%= frontImages[loc] %>">
 	        </a>
-	        <a href="#<%= categories[loc].toLowerCase() %>" class="back <%= categories[loc].toLowerCase() %>">
+	        <a href="#<%= categories[loc].toLowerCase() %>" class="back">
 	            <img src="<%= backImages[loc] %>">
 	        </a>
     	</li>

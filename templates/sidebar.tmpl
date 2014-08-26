@@ -1,6 +1,6 @@
 <ul>
 	<li><a href="#add">Add New</a></li>
 	<% for (var subcat in subcats){ %>
-        <li><a href="#<%= cat %>/<%= subcats[subcat].replace(' ', '_').toLowerCase()%>"><%= subcats[subcat] %></a></li>
+        <li <%if(subcat.toString() === indexOfSubcategory.toString()) { %> class="active" <% } %> ><a href="#<%= cat %>/<%= subcats[subcat].replace(' ', '_').toLowerCase()%>"><%= subcats[subcat] %></a></li>
 	<% } %>
 </ul>

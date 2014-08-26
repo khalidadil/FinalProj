@@ -154,19 +154,17 @@ ul {
 	backface-visibility: hidden;
 	transform: rotateY(0deg);
 }
-.icon:hover .front {
+.icon:hover .front, .icon.active .front {
 	transform: rotateY(-180deg);
 }
 .back {
 	backface-visibility: hidden;
 	transform: rotateY(180deg);
 }
-.icon:hover .back {
+.icon:hover .back, .icon.active .back {
 	transform: rotateY(0);
 }
-.back.active {
-	transform: rotateY(0);
-}
+
 /**********SUB-NAV**********/
 .sub-nav a {
 	color: var(--navblue);
@@ -184,7 +182,13 @@ ul {
 	animation-duration: .5s;
 	animation-timing-function: ease;
 	animation-fill-mode: both;
-	animation-delay: 1s;
+	animation-delay: .5s;
+}
+.sub-nav li.active{
+	background: var(--navblue);
+}
+.sub-nav li.active a{
+	color: var(--white);
 }
 .sub-nav li:hover {
 	background: var(--navblue);
@@ -233,6 +237,24 @@ ul {
 }
 .sub-nav li:nth-child(14) {
 	animation-delay: 1.4s;
+}
+.sub-nav li:nth-child(15) {
+	animation-delay: 1.5s;
+}
+.sub-nav li:nth-child(16) {
+	animation-delay: 1.6s;
+}
+.sub-nav li:nth-child(17) {
+	animation-delay: 1.7s;
+}
+.sub-nav li:nth-child(18) {
+	animation-delay: 1.8s;
+}
+.sub-nav li:nth-child(19) {
+	animation-delay: 1.9s;
+}
+.sub-nav li:nth-child(20) {
+	animation-delay: 2.0s;
 }
 @keyframes fadeInRight {
 	0% {

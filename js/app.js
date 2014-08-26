@@ -48,15 +48,40 @@ var AppView = Parse.View.extend({
             var categoryLoc = justCategories.indexOf(capitalCategory);
 
             justSubCategories = _.zip.apply(_, models[categoryLoc].attributes.related)[0];
+
             if (!section) {
                 section = justSubCategories[0];
                 window.location = '#' + category + '/' + section.replace(' ', '_').toLowerCase();
                 return; //this is here so that rendering is canceled when the location is switched
             }
+            else if (section === "cdns" || section ==="apis"){
+                var capitalSubcategory = section.substr(0,3).toUpperCase() + section.slice(3);
+                var subcatLoc = justSubCategories.indexOf(capitalSubcategory);
+            }
+            else if (section.indexOf("_")){
+                var capitalSubcategory = section.split("_");
+                if(capitalSubcategory[0] === "mvc" || capitalSubcategory[0] === "seo"){
+                    capitalSubcategory[0] = capitalSubcategory[0].toUpperCase();
+                    for(i=1; i<capitalSubcategory.length; i++){
+                        capitalSubcategory[i] = capitalSubcategory[i][0].toUpperCase() + capitalSubcategory[i].slice(1);
+                    }
+                }
+                else{
+                    for (loc in capitalSubcategory) {
+                        capitalSubcategory[loc] = capitalSubcategory[loc][0].toUpperCase() + capitalSubcategory[loc].slice(1);
+                    }
+                }
+                capitalSubcategory = capitalSubcategory.join(" ");
+                var subcatLoc = justSubCategories.indexOf(capitalSubcategory);
+            }
+            else{
+                var capitalSubcategory = section[0].toUpperCase() + section.slice(1);
+                var subcatLoc = justSubCategories.indexOf(capitalSubcategory);
+            }
 
             justToolTags = _.zip.apply(_, models[categoryLoc].attributes.related)[1];
 
-            self.render(justCategories, frontImages, backImages, justSubCategories, justToolTags, category, section, filterCat, filter);
+            self.render(justCategories, frontImages, backImages, justSubCategories, justToolTags, category, section, filterCat, filter, categoryLoc, subcatLoc);
         });
     },
     getTemplate: function(url) {
@@ -77,7 +102,7 @@ var AppView = Parse.View.extend({
             return _.template(html);
         });
     },
-    render: function(justCategories, justfrontImages, justbackImages, justSubCategories, justToolTags, category, section, filterCat, filter) {
+    render: function(justCategories, justfrontImages, justbackImages, justSubCategories, justToolTags, category, section, filterCat, filter, indexOfCategory, indexOfSubcategory) {
         // debugger;
         $.when(
             this.getTemplate(this.header_template_url),
@@ -87,19 +112,21 @@ var AppView = Parse.View.extend({
                 catData = {
                     categories: justCategories,
                     frontImages: justfrontImages,
-                    backImages: justbackImages
+                    backImages: justbackImages,
+                    indexOfCategory: indexOfCategory
                 },
                 catDest = '.nav-wrapper',
                 sidebarData = {
                     cat: category,
-                    subcats: justSubCategories
+                    subcats: justSubCategories,
+                    indexOfSubcategory: indexOfSubcategory
                 },
                 sidebarDest = '#col1';
 
             // debugger;
             $(catDest).html(headerTemplatingFn(catData));
             $(sidebarDest).html(sidebarTemplatingFn(sidebarData));
-            $('.back ' + category).toggleClass('active');
+            // $('.back ' + category).toggleClass('active');
             var myTool = new ToolView(category, section, justToolTags, filterCat, filter);
         })
     }
