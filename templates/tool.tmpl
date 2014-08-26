@@ -48,13 +48,15 @@
         <a href="http://<%= website %>"><%= name %> Site</a>
     </div>
     <p><%= description %></p>
-    <div class="tags">
-        <ul>
-            <% if (tags){
-            	for (var loc in tags){ %>
-            	<a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/tag/<%= tags[loc].replace(" ", "_") %>"><li><%= tags[loc] %></li></a>
-            <% 	}
-               } %>
-        </ul>
-    </div>
+    <% if (tags){
+    	<div class="tags">
+	        <ul>
+	            <% if (tags){
+	            	for (var loc in tags){ %>
+	            	<a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/tag/<%= tags[loc].replace(" ", "_") %>"><li><%= tags[loc] %></li></a>
+	            <% 	}
+	               } %>
+	        </ul>
+    	</div>
+	<% 	} %>
 </div>
