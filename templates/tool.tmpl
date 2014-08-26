@@ -48,7 +48,8 @@
         <a href="http://<%= website %>"><%= name %> Site</a>
     </div>
     <p><%= description %></p>
-    <% if (tags){
+    <% console.log(tags);
+       if (tags[0] !== ""){ %>
     	<div class="tags">
 	        <ul>
 	            <% if (tags){
