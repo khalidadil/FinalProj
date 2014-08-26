@@ -322,6 +322,16 @@ hr {
 	padding: 2px 18px;
 	color: var(--white);
 }
+/**********FORM**********/
+#addEditItems {
+	padding: 100px;
+}
+#addEditItems #url {
+	width: 600px;
+}
+#addEditItems #description {
+	width: 600px;
+}
 /**********FOOTER**********/
 footer {
 	text-align: center;
