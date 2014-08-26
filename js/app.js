@@ -147,7 +147,8 @@ var ToolView = Parse.View.extend({
         this.listing.query.equalTo("subcategory", subcategory.replace('_', ' ').toLowerCase());
 
         if (filterCat === "tag") {
-            filter = filter.charAt(0).toUpperCase() + filter.slice(1);
+            filter = filter.replace("_"," ");
+            // filter = filter.charAt(0).toUpperCase() + filter.slice(1);
             this.listing.query.equalTo("tags", filter);
         }
 
