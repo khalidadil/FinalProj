@@ -1,9 +1,13 @@
 :root {
   --white: rgb(245, 245, 245);
-  --red: rgb(233, 93, 81);
   --navblue: rgb(70, 99, 159);
   --blue: rgb(46, 51, 70);
-  --darkblue: rgb(39, 44, 61);
+  --dkblue: rgb(39, 44, 61);
+  --red: rgb(233, 93, 81);
+  --purple: rgb(150, 90, 165);
+  --ltblue: rgb(71, 200, 239);
+  --green: rgb(102, 190, 97);
+  --yellow: rgb(254, 205, 8);
 }
 /**********FONTS**********/
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,300);
@@ -23,7 +27,7 @@ ul {
 }
 .title-block{
 	text-align: center;
-	background-color: rgb(39, 44, 61);
+	background-color: var(--dkblue);
 }
 .title-block img {
 	padding: 20px 0px;
@@ -42,7 +46,7 @@ ul {
 	text-align: center;
 	padding: 10px;
 	margin: 0px;
-	background: rgb(46, 51, 70);
+	background: var(--blue);
 	color: var(--white);
 }
 .pre-nav p {
@@ -59,13 +63,13 @@ ul {
 	padding: 5px 20px;
 	border: 1px solid var(--white);
 	color: var(--white);
-	background: rgb(46, 51, 70);	
+	background: var(--blue);	
 	border-radius: 10px;
 	transition: background 0.5s ease;
 	outline: 0px;
 }
 .pre-nav button:hover {
-	background-color: rgb(70, 99, 159);
+	background-color: var(--navblue);
 }
 .email {
 	padding: 20px 0px 10px 0px;
@@ -91,7 +95,7 @@ ul {
 .email input {
 	line-height: inherit;
 	padding: 5px 20px;	
-	background: rgb(46, 51, 70);
+	background: var(--blue);
 	border: 1px solid var(--white);
 	border-radius: 10px;
 }
@@ -105,7 +109,7 @@ ul {
 	list-style-type: none;		
 	padding: 0px;
 	margin:	0px;
-	background-color: rgb(70, 99, 159);
+	background-color: var(--navblue);
 }
 .main-nav li {
 	display: inline-block;
@@ -128,7 +132,7 @@ ul {
 	clear: both;
 }
 .icon {
-	background-color: rgb(70, 99, 159);
+	background-color: var(--navblue);
 	position: relative;
 	display: inline-block;	
 }
@@ -165,7 +169,7 @@ ul {
 }
 /**********SUB-NAV**********/
 .sub-nav a {
-	color: rgb(70, 99, 159);
+	color: var(--navblue);
 	text-decoration: none;
 }
 .sub-nav li {
@@ -176,14 +180,14 @@ ul {
 	font-style: italic;
 	padding: 10px;
 	border-bottom: 1px solid rgb(200, 200, 200);
-    animation-name: fadeInRight;
-    animation-duration: .5s;
-    animation-timing-function: ease;
-    animation-fill-mode: both;
-    animation-delay: 1s;
+	animation-name: fadeInRight;
+	animation-duration: .5s;
+	animation-timing-function: ease;
+	animation-fill-mode: both;
+	animation-delay: 1s;
 }
 .sub-nav li:hover {
-	background: rgb(70, 99, 159);
+	background: var(--navblue);
 }
 .sub-nav ul li:hover a {
 	color: var(--white);
@@ -291,7 +295,7 @@ hr {
 	padding-left: 1em;
 }
 .specs a {
-	color: rgb(70, 99, 159);
+	color: var(--navblue);
 	text-decoration: none;
 }
 .specs a:hover {
@@ -313,7 +317,7 @@ hr {
 	padding-left: 1em;
 }
 .tags li{
-	background: rgb(70, 99, 159);
+	background: var(--navblue);
 	border-radius: 25px;
 	padding: 2px 18px;
 	color: var(--white);
@@ -322,7 +326,7 @@ hr {
 footer {
 	text-align: center;
 	padding: 75px 0px 100px 0px;
-	background: rgb(39, 44, 61); 
+	background: var(--dkblue); 
 	color: var(--white);
 	width: 100%;
 	clear: both;
