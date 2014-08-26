@@ -146,9 +146,6 @@ var ToolView = Parse.View.extend({
         this.listing.query.equalTo("category", category.replace('_', ' '));
         this.listing.query.equalTo("subcategory", subcategory.replace('_', ' ').toLowerCase());
 
-        console.log("filter category: " + filterCat);
-        console.log("filter: " + filter);
-
         if (filterCat === "tag") {
             filter = filter.charAt(0).toUpperCase() + filter.slice(1);
             this.listing.query.equalTo("tags", filter);
