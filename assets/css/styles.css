@@ -76,7 +76,7 @@ ul {
 	display: none;
 }
 .email.visible {
-	display: block;
+	display: inline-block;
 	animation: fadeDown 0.25s ease;
 }
 @keyframes fadeDown {
