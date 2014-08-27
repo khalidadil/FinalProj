@@ -306,6 +306,9 @@ ul {
 	display: inline-block;
 	font-style: italic;
 }
+.content li a:hover {
+	border-bottom: 3px solid var(--dkblue);
+}
 hr {
 	border: 0;
 	height: 0;
@@ -338,11 +341,16 @@ hr {
 	float: none;
 	padding-left: 1em;
 }
-.tags li{
-	background: var(--navblue);
+.tags li {
+	background: var(--white);
 	border-radius: 25px;
+	border: 2px solid var(--navblue);
 	padding: 2px 18px;
-	color: var(--white);
+	color: var(--navblue);
+}
+.tags li:hover {
+	background: var(--navblue);	
+	color: var(--white);	
 }
 /**********FORM**********/
 #addEditItems {
@@ -384,5 +392,19 @@ footer a {
 .footer-right li {
 	display: inline-block;
 	text-align: left;
-	padding: 0px 10px;
+	padding: 0px 20px;
+}
+.footer-right button {
+	display: inline-block;
+	margin-left: 10px;
+	padding: 5px 20px;
+	border: 1px solid var(--white);
+	color: var(--white);
+	background: var(--blue);	
+	border-radius: 10px;
+	transition: background 0.5s ease;
+	outline: 0px;
+}
+.footer-right button:hover {
+	background-color: var(--navblue);
 }
