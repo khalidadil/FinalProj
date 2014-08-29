@@ -120,6 +120,54 @@ this.view = new ModifyData("./templates/modify.tmpl", 'a');
         </dd>
     </dl>
 
+<% for (var loc = 0; loc < categories.length; loc++){ %>
+    <a href="#<%= categories[loc].toLowerCase() %>">
+        <li><%= categories[loc] %></li>
+    </a>
+<% } %>
+
+    <a href="#add"><div class="catBox add"><h6>Add New</h6></div></a>
+<% for (var subcat in subcats){ %>
+    <a href="#<%= cat %>/<%= subcats[subcat].replace(' ', '_').toLowerCase()%>"><div class="catBox"><h6><%= subcats[subcat] %></h6></div></a>
+<% } %>
+
+
+<div class="content" id="<%= id %>">
+    <a href="http://<%= website %>"><div class="toolname"><p><%= name %></p></div></a>
+    <div class="category"><p><%= category %> > <%= subcategory %></p></div>
+    <div class="tags"><a id='tags' href="#<%= category.replace(' ', '_').toLowerCase() %>/<%= subcategory.replace(' ', '_').toLowerCase() %>/<%= _.each(tags, function(tag) { return tag.replace(' ', '_').toLowerCase(); }) %>"><p><%= tags %></p></a></div>
+    <div class="karmic"><p><%= karmic %></p></div>
+    <div class="platform"><p><%= platform %></p></div>
+    <!--<div class="edit"><a href = "#edit/<%= id %>"><p>Edit</p></a></div>-->
+</div>
+
+<a href="mailto:khalidadil29@gmail.com?subject=I know an awesome tool that you need to add!&body=The awesome tool can be found at [www.google.com] and would probably go under [category] and [section].">send e-mail</a>
+
+<!-- Begin MailChimp Signup Form -->
+<div id="mc_embed_signup">
+    <form action="//webcak.us9.list-manage.com/subscribe/post?u=212fedc967774a4a19221da42&amp;id=27a5b9ff64" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+        
+    <div class="mc-field-group">
+        <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+    </div>
+        <div id="mce-responses" class="clear">
+            <div class="response" id="mce-error-response" style="display:none"></div>
+            <div class="response" id="mce-success-response" style="display:none"></div>
+        </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+        <div style="position: absolute; left: -5000px;"><input type="text" name="b_212fedc967774a4a19221da42_27a5b9ff64" tabindex="-1" value=""></div>
+        <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+    </form>
+</div>
+
+<button class="subscribe">Subscribe</button>
+                    <div class="email">
+                        <form>
+                            <input type="email" name="email">
+                            <input type="submit">
+                        </form>
+                    </div>
+
+<!--End mc_embed_signup-->
 
 
 //     ___________   ______  ____  ______

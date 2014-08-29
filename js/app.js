@@ -46,9 +46,11 @@ var AppView = Parse.View.extend({
 
             var capitalCategory = category[0].toUpperCase() + category.slice(1);
             var categoryLoc = justCategories.indexOf(capitalCategory);
-
-            justSubCategories = _.zip.apply(_, models[categoryLoc].attributes.related)[0];
-
+            
+            if (models[categoryLoc].attributes.related){
+                justSubCategories = _.zip.apply(_, models[categoryLoc].attributes.related)[0];
+            }
+            
             if (!section) {
                 section = justSubCategories[0];
                 window.location = '#' + category + '/' + section.replace(' ', '_').toLowerCase();
@@ -172,6 +174,7 @@ var ToolView = Parse.View.extend({
 
         this.listing.query.equalTo("category", category.replace('_', ' '));
         this.listing.query.equalTo("subcategory", subcategory.replace('_', ' ').toLowerCase());
+        this.listing.query.ascending("tags");
 
         if (filterCat === "tag") {
             filter = filter.replace("_"," ");
