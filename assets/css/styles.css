@@ -337,6 +337,33 @@ hr {
 .content p {
 	padding: 0px 2em;
 }
+.tooltip{
+    display: inline;
+    position: relative;
+}
+.tooltip:hover:after{
+    background: #333;
+    background: rgba(0,0,0,.8);
+    border-radius: 5px;
+    bottom: 40px;
+    left: -20%;
+    color: #fff;
+    content: attr(title);
+    padding: 3px 10px;
+    position: absolute;
+    z-index: 98;
+    /*width: 120px;*/
+}
+.tooltip:hover:before{
+    border: solid;
+    border-color: #333 transparent;
+    border-width: 6px 6px 0 6px;
+    bottom: 34px;
+    content: "";
+    left: 40%;
+    position: absolute;
+    z-index: 99;
+}
 .tags ul {
 	float: none;
 	padding-left: 1em;

@@ -6,7 +6,7 @@
            for (i=0; i<platforms.length; i++)
            {
                 if(platform.indexOf(platforms[i]) !== -1){ %>
-                    <li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/<%= platforms[i] %>"><img src="./assets/img/<%= platform_pics[i] %>"></a></li>
+                    <li><a class="tooltip" title="<%= platforms[i] %>" href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/platform/<%= platforms[i] %>"><img src="./assets/img/<%= platform_pics[i] %>"></a></li>
                 <%}
            } %>
 		
@@ -16,7 +16,7 @@
            for (i=0; i<prices.length; i++)
            {
                 if(price === prices[i]){ %>
-                    <li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/price/<%= prices[i] %>"><img src="./assets/img/<%= prices_pics[i] %>"></a></li>
+                    <li><a class="tooltip" title="<%= prices[i] %>" href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/price/<%= prices[i] %>"><img src="./assets/img/<%= prices_pics[i] %>"></a></li>
                 <%}
            } %> 
 
@@ -26,7 +26,7 @@
            for (i=0; i<karmics.length; i++)
            {
                 if(karmic.indexOf(karmics[i]) !== -1){ %>
-                    <li><a href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/karmic/<%= karmics[i] %>"><img src="./assets/img/<%= karmic_pics[i] %>"></a></li>
+                    <li><a class="tooltip" title="<%= karmics[i] %>" href="#<%= category.replace(" ", "_").toLowerCase() %>/<%= subcategory.replace(" ", "_") %>/filter/karmic/<%= karmics[i] %>"><img src="./assets/img/<%= karmic_pics[i] %>"></a></li>
                 <%}
            } %>
     </ul>
